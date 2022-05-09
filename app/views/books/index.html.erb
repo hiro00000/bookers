@@ -1,0 +1,73 @@
+<style>
+  .box{
+    width: 450px;
+    height:116px;
+    border: 2px solid red;
+    padding: 7px;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+  }
+  .errors{
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    margin-bottom: 0;
+    background-color: #c00;
+    color: #fff;
+  }
+  h2{
+    font-size: 1.5em;
+    margin-top: 5px;
+    margin-bottom:10px;
+  }
+  h4,p{
+    margin-top: 10px;
+  }
+</style>
+
+<body>
+  <h1>Books</h1>
+      <table width="75%">
+        <tr>
+          <th>Tiele</th>
+          <th>Body</th>
+          <th></th>
+        </tr>
+        <% @books.each do |book| %>
+        <tr>
+          <td><%= book.title %></td>
+          <td><%= book.body %></td>
+          <td>
+            <%= link_to "Show",book_path(book.id) %>
+            <%= link_to "Edit",edit_book_path(book.id) %>
+            <%= link_to "Destroy",book_path(book.id),method: :delete,"data-confirm" => "Are you sure?" %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+  <h2>New book</h2>
+  
+  <% if @book.errors.any? %>
+    <div class="box">
+      <p class="errors"><%= @book.errors.count %>errors prohibited this book from being saved:</p>
+      <p>
+        <% @book.errors.full_messages.each do |message| %>
+          <p>・<%= message %></p>
+        <% end %>
+      </p>
+    </div>
+  <% end %>
+  
+  <%= form_with model: @book, url: '/books', method: :post do |f| %>
+    <h4>Tiele</h4>
+      <%= f.text_field :title %>
+    <h4>Body</h4>
+      <%= f.text_area :body %>
+    <p>
+      <%= f.submit 'Create Book' %>
+    </p>
+  <% end %>
+</body>
